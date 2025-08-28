@@ -1,0 +1,35 @@
+---
+// src/pages/[lang]/[page].astro
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { LOCALES, type Locale } from "@/i18n/config";
+
+// Build static paths for every localized "otherPages" entry
+export async function getStaticPaths() {
+  const entries = await getCollection("otherPages");
+  return entries.map((entry) => {
+    // derive lang from frontmatter (preferred) or from folder prefix in slug
+    const lang: Locale =
+      (entry.data as any).lang ??
+      ((entry.slug.startsWith("el/") ? "el" : "en") as Locale);
+
+    // strip leading "en/" or "el/" from slug so [page] is just the rest
+    const page = entry.slug.replace(/^en\/|^el\//, "");
+    return { params: { lang, page }, props: { entry, lang } };
+  });
+}
+
+const { entry, lang } = Astro.props as { entry: any; lang: Locale };
+const { title, description } = entry.data;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <article class="site-container py-16">
+    <h1 class="h1">{title}</h1>
+    <p class="mt-4 opacity-80">{description}</p>
+    <div class="prose mt-8">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import siteData from "@config/siteData.json";
+import Hero from "@components/Hero/Hero.astro";
+import FeatureNumbers from "@components/Feature/FeatureNumbers.astro";
+import PortfolioThreeCards from "@components/Portfolio/PortfolioThreeCards.astro";
+import PricingThreeCards from "@components/Pricing/PricingThreeCards.astro";
+import Testimonials from "@components/Testimonials/Testimonials.astro";
+import About from "@components/About/About.astro";
+import Contact from "@components/Contact/Contact.astro";
+
+import { getLangFromUrl } from "@/i18n/utils";
+const lang = getLangFromUrl(Astro.url);
+---
+
+<BaseLayout title={siteData.title} description={siteData.description} navStartStyle="white" lang={lang}>
+  <Hero lang={lang} />
+  <FeatureNumbers lang={lang} />
+  <PortfolioThreeCards lang={lang} />
+  <Testimonials lang={lang} />
+  <PricingThreeCards lang={lang} />
+  <About lang={lang} />
+  <Contact lang={lang} />
+</BaseLayout>

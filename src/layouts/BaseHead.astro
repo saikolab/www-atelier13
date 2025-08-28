@@ -1,39 +1,36 @@
 ---
 import Seo from "@components/Seo/Seo.astro";
 import siteData from "@config/siteData.json";
-import { type CollectionEntry } from "astro:content";
 import { ClientRouter } from "astro:transitions";
+import { LOCALES, DEFAULT_LOCALE, type Locale } from "@/i18n/config";
 
 export interface Props {
-	type?: "general" | undefined;
-	title: string;
-	description: string;
-	image?: ImageMetadata;
-	noindex?: boolean;
+  type?: "general" | undefined;
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  lang?: Locale;
 }
 
-const { type = "general", title, description, image, noindex = false } = Astro.props as Props;
+const { type = "general", title, description, image, noindex = false, lang = DEFAULT_LOCALE } = Astro.props as Props;
 
-import CinzelDecorative from "@fontsource/cinzel-decorative/files/cinzel-decorative-latin-400-normal.woff2";
-import PlayfairDisplayVariable from "@fontsource-variable/playfair-display/files/playfair-display-latin-wght-normal.woff2";
-import RalewayVariable from "@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2";
-import WorkSansVariable from "@fontsource-variable/work-sans/files/work-sans-latin-wght-normal.woff2";
+// compute canonical + alternates
+const pathname = Astro.url.pathname.replace(/^\/(en|el)(?=\/|$)/, "");
+const canonicalBase = Astro.site?.toString().replace(/\/$/, "") ?? "";
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" initial-scale="1.0" />
 
-<!-- local font preload for better performance when not using ClientRouter -->
-<link rel="preload" href={WorkSansVariable} as="font" type="font/woff2" crossorigin="anonymous" />
-<link rel="preload" href={RalewayVariable} as="font" type="font/woff2" crossorigin="anonymous" />
+<!-- local font preload -->
 <link
-	rel="preload"
-	href={PlayfairDisplayVariable}
-	as="font"
-	type="font/woff2"
-	crossorigin="anonymous"
+  rel="preload"
+  href="/fonts/cinzel-decorative.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
 />
-<link rel="preload" href={CinzelDecorative} as="font" type="font/woff2" crossorigin="anonymous" />
 
 <!-- Favicons. Generated from https://realfavicongenerator.net/ -->
 <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png" sizes="96x96" />
@@ -45,6 +42,13 @@ import WorkSansVariable from "@fontsource-variable/work-sans/files/work-sans-lat
 <!-- other -->
 <meta name="generator" content={Astro.generator} />
 <link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Canonical & hreflang -->
+<link rel="canonical" href={`${canonicalBase}/${lang}${pathname}`} />
+{LOCALES.map((l) => (
+  <link rel="alternate" hrefLang={l} href={`${canonicalBase}/${l}${pathname}`} />
+))}
+<link rel="alternate" hrefLang="x-default" href={`${canonicalBase}/${DEFAULT_LOCALE}${pathname}`} />
 
 <Seo type={type} title={title} description={description} image={image} noindex={noindex} />
 

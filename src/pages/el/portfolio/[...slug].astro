@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { Locale } from "@/i18n/config";
+
+const LANG: Locale = "el";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("portfolios");
+
+  return entries
+    .filter((e) => {
+      const fmLang = (e.data as any).lang as Locale | undefined;
+      const raw = String(e.slug ?? e.id);
+      return fmLang === LANG || raw.startsWith(`${LANG}/`);
+    })
+    .map((entry) => {
+      const raw = String(entry.slug ?? entry.id);
+      const rest = raw.replace(/^en\/|^el\//, "");
+      return { params: { slug: rest }, props: { entry } };
+    });
+}
+
+const { entry } = Astro.props as { entry: any };
+const { title, description } = entry.data;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={title} description={description} lang={LANG}>
+  <article class="site-container py-16">
+    <h1 class="h1">{title}</h1>
+    <p class="mt-4 opacity-80">{description}</p>
+    <div class="prose mt-8"><Content /></div>
+  </article>
+</BaseLayout>
