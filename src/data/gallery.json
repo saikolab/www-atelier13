@@ -6,5 +6,6 @@
   "portfolio-header-crop-min": {
     "title": "Entryway Styling",
     "description": "Minimal composition with natural materials and tonal contrast."
-  }
+  },
+  "featured": ["k17-001", "k17-003", "k17-010"]
 }

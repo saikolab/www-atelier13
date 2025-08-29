@@ -42,6 +42,7 @@ function normalizeBase(name: string) {
 type RawItem = GalleryItem & { name: string; baseKey: string; hash: string };
 
 const excludeSet = new Set<string>(Array.isArray((meta as any).exclude) ? (meta as any).exclude.map((s: string) => s.replace(/\.(jpg|png)$/i, "")) : []);
+const featuredSet = new Set<string>(Array.isArray((meta as any).featured) ? (meta as any).featured.map((s: string) => s.replace(/\.(jpg|png)$/i, "")) : []);
 
 const rawItems: RawItem[] = Object.entries(modules)
   .filter(([path]) => !/logo|site-logo/i.test(path))
@@ -80,15 +81,20 @@ for (const it of byHash.values()) {
   if (!prev || (it.asset.width || 0) > (prev.asset.width || 0)) byBase.set(it.baseKey, it);
 }
 
-const items: GalleryItem[] = Array.from(byBase.values())
-  .map(({ name: _n, baseKey: _b, ...rest }) => rest)
+const items: (GalleryItem & { name?: string; baseKey?: string; isFeatured: boolean })[] = Array.from(byBase.values())
+  .map(({ name, baseKey, ...rest }) => ({
+    ...rest,
+    name,
+    baseKey,
+    isFeatured: featuredSet.has(baseKey) || featuredSet.has(name)
+  }))
   .sort((a, b) => a.title.localeCompare(b.title));
 
 // Precompute a large image URL for the lightbox so the same source is used consistently
 const viewItems = await Promise.all(
   items.map(async (it) => {
     const full = await getImage({ src: it.asset, width: 1600, format: "jpg" });
-    return { ...it, fullUrl: full.src } as (GalleryItem & { fullUrl: string });
+    return { ...it, fullUrl: full.src } as (GalleryItem & { fullUrl: string } & { isFeatured: boolean });
   })
 );
 ---
@@ -98,25 +104,27 @@ const viewItems = await Promise.all(
     <h1 class="h2 text-pretty uppercase">Gallery</h1>
   </div>
 
-  <div class="gallery__masonry mt-8 md:mt-12">
+  <div class="gallery__grid mt-8 md:mt-12">
     {viewItems.map((item, idx) => (
-      <div class="gallery__item">
-        <button
-          class={`gallery__tile group relative w-full overflow-hidden rounded`}
-          data-index={idx}
-          data-full={item.fullUrl}
-          data-title={item.title}
-          data-description={item.description}
-          aria-label={`Open ${item.title}`}
-        >
-          <Image
-            src={item.asset}
-            alt={item.title}
-            width={900}
-            densities={[1.5, 2]}
-            class="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
-          />
-        </button>
+      <div class="gallery__cell" style={`grid-column: span ${item.isFeatured ? 2 : 1};`}>
+        <div class="gallery__tile-wrapper">
+          <button
+            class={`gallery__tile group relative w-full overflow-hidden rounded`}
+            data-index={idx}
+            data-full={item.fullUrl}
+            data-title={item.title}
+            data-description={item.description}
+            aria-label={`Open ${item.title}`}
+          >
+            <Image
+              src={item.asset}
+              alt={item.title}
+              width={1200}
+              densities={[1.5, 2]}
+              class="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+            />
+          </button>
+        </div>
       </div>
     ))}
   </div>
@@ -148,8 +156,23 @@ const viewItems = await Promise.all(
   const btnClose = document.getElementById("lightbox__close") as HTMLButtonElement;
   const btnPrev = document.getElementById("lightbox__prev") as HTMLButtonElement;
   const btnNext = document.getElementById("lightbox__next") as HTMLButtonElement;
+  const grid = document.querySelector('.gallery__grid') as HTMLElement;
   const tiles = Array.from(document.querySelectorAll('.gallery__tile')) as HTMLElement[];
   let currentIndex = -1;
+
+  function calcRowSpan(cell: HTMLElement) {
+    if (!grid) return;
+    const rowHeight = parseFloat(getComputedStyle(grid).getPropertyValue('grid-auto-rows')) || 8;
+    const rowGap = parseFloat(getComputedStyle(grid).getPropertyValue('grid-row-gap')) || parseFloat(getComputedStyle(grid).getPropertyValue('gap')) || 12;
+    const inner = cell.querySelector('.gallery__tile-wrapper') as HTMLElement;
+    if (!inner) return;
+    const h = inner.getBoundingClientRect().height;
+    const span = Math.ceil((h + rowGap) / (rowHeight + rowGap));
+    (cell as HTMLElement).style.gridRowEnd = `span ${span}`;
+  }
+  function resizeAll() {
+    document.querySelectorAll('.gallery__cell').forEach((c) => calcRowSpan(c as HTMLElement));
+  }
 
   function setLightbox(full: string, title: string, description: string) {
     overlayImg.src = full;
@@ -187,6 +210,17 @@ const viewItems = await Promise.all(
   btnClose?.addEventListener("click", closeLightbox);
   btnPrev?.addEventListener('click', (e) => { e.stopPropagation(); openLightboxByIndex(currentIndex - 1); });
   btnNext?.addEventListener('click', (e) => { e.stopPropagation(); openLightboxByIndex(currentIndex + 1); });
+  // measure on load and resize
+  window.addEventListener('load', resizeAll);
+  window.addEventListener('resize', resizeAll);
+  document.querySelectorAll('.gallery__tile img').forEach((img) => {
+    const i = img as HTMLImageElement;
+    if (i.complete) {
+      resizeAll();
+    } else {
+      i.addEventListener('load', resizeAll, { once: true } as any);
+    }
+  });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeLightbox();
     if (!overlay || overlay.classList.contains('hidden')) return;
@@ -201,19 +235,19 @@ const viewItems = await Promise.all(
   #lightbox { display: none; }
   #lightbox:not(.hidden) { display: flex; }
   .gallery__tile { position: relative; display: block; }
-  .gallery__masonry {
-    column-count: 2;
-    column-gap: 0.75rem; /* ~gap-3 */
-  }
-  .gallery__item { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 0.75rem; }
+  .gallery__grid { display: grid; grid-auto-rows: 8px; gap: 0.75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery__cell { grid-row-end: span 1; }
   @media (min-width: 640px) { /* sm */
-    .gallery__masonry { column-count: 3; }
+    .gallery__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (min-width: 768px) { /* md */
-    .gallery__masonry { column-count: 4; }
+    .gallery__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
   @media (min-width: 1024px) { /* lg */
-    .gallery__masonry { column-count: 5; }
+    .gallery__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1280px) { /* xl */
+    .gallery__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   }
   .lightbox__nav {
     position: absolute;
