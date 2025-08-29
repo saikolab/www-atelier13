@@ -5,6 +5,8 @@
 import Button from "@components/Button/Button.astro";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { localizedPath } from "@/i18n/utils";
+import type { Locale } from "@/i18n/config";
 
 interface Props {
 	portfolio: CollectionEntry<"portfolios">;
@@ -13,7 +15,14 @@ interface Props {
 }
 
 const { portfolio, direction, noTransitions = false } = Astro.props as Props;
-const { title, description, heroImage } = portfolio.data;
+const { title, description, heroImage, lang } = portfolio.data as (typeof portfolio.data) & { lang: Locale };
+
+// Build localized detail URL: /{lang}/portfolio/{slug-without-lang}
+const rawId = String((portfolio as any).slug ?? portfolio.id);
+const parts = rawId.split("/");
+const idWithoutLocale = parts.length > 1 ? parts.slice(1).join("/") : rawId;
+const idClean = idWithoutLocale.replace(/\/index$/, "");
+const detailHref = localizedPath(lang, `/portfolio/${idClean}`);
 ---
 
 <div
@@ -24,7 +33,7 @@ const { title, description, heroImage } = portfolio.data;
 		},
 	]}
 >
-	<a href={`/portfolio/${portfolio.id}`} class="aspect-square overflow-hidden">
+	<a href={detailHref} class="aspect-square overflow-hidden">
 		{
 			noTransitions && (
 				<Image
@@ -55,7 +64,7 @@ const { title, description, heroImage } = portfolio.data;
 			<p class="mt-4 lg:text-lg">{description}</p>
 		</div>
 		<div class="flex">
-			<Button variant="ghost" arrow="right" href={`/portfolio/${portfolio.id}`} class="pl-0">
+			<Button variant="ghost" arrow="right" href={detailHref} class="pl-0">
 				View More
 			</Button>
 		</div>
