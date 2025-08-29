@@ -24,7 +24,7 @@ const byLang = allPortfolios.filter((e) => !("lang" in e.data) || e.data.lang ==
 // sort by `order` (ascending)
 const sorted = byLang.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 
-// take first three, fallback to whatever exists
+// take up to three to display
 const firstThreePortfolios = sorted.slice(0, 3);
 ---
 
@@ -46,8 +46,17 @@ const firstThreePortfolios = sorted.slice(0, 3);
         <PortfolioCard portfolio={firstThreePortfolios[2]} direction="horizontal" />
       </div>
     </div>
+  ) : firstThreePortfolios.length > 0 ? (
+    // If 1-2 items exist, show a simple grid of what's available
+    <div class="grid gap-10 pt-8 md:grid-cols-2 md:pt-12">
+      {firstThreePortfolios.map((p) => (
+        <div class="md:bg-base-100 md:rounded-md md:p-10 md:pb-6">
+          <PortfolioCard portfolio={p} direction="vertical" />
+        </div>
+      ))}
+    </div>
   ) : (
-    // Graceful fallback if fewer than 3 localized items exist
+    // No localized items exist yet
     <div class="mx-auto max-w-3xl pt-10 text-center opacity-70">
       <p>{t(lang, "portfolioSection", "fallback")}</p>
     </div>

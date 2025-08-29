@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import Footer from "@components/Footer/Footer.astro";
 import Nav from "@components/Nav/Nav.astro";
 import BaseHead from "@layouts/BaseHead.astro";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 
 interface Props {
   type?: "general";
@@ -21,7 +22,7 @@ const {
   description,
   heroImage,
   noindex = false,
-  lang = "en",
+  lang = DEFAULT_LOCALE,
 } = Astro.props as Props;
 ---
 

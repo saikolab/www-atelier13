@@ -32,6 +32,7 @@ const otherPortfolios = await getCollection(
 	type="general"
 	title={title}
 	description={description}
+	lang={(portfolio.data as any).lang}
 	heroImage={heroImage}
 	navStartStyle="white"
 >
