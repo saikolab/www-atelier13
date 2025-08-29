@@ -1,0 +1,14 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Gallery from "@/components/Gallery/Gallery.astro";
+import siteData from "@/config/siteData.json";
+import { getLangFromUrl } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<BaseLayout title={`${siteData.name} — Gallery`} description="Project imagery and inspiration." lang={lang}>
+  <Gallery lang={lang} />
+  
+</BaseLayout>
+

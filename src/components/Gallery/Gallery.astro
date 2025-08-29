@@ -1,0 +1,238 @@
+---
+import { Image, getImage } from "astro:assets";
+import fs from "node:fs";
+import path from "node:path";
+import crypto from "node:crypto";
+import type { Locale } from "@/i18n/config";
+import meta from "@/data/gallery.json";
+
+interface Props { lang?: Locale }
+const { lang = "en" } = Astro.props as Props;
+
+// Eagerly import images from assets. Filter out logos.
+const modules = import.meta.glob("@assets/images/*.{jpg,png}", { eager: true, import: "default" });
+
+function toTitle(name: string) {
+  const base = name.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+  return base.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+type GalleryItem = {
+  asset: ImageMetadata;
+  url: string;
+  title: string;
+  description: string;
+  ratio: number;
+  colSpan: number;
+  shape: "square" | "portrait" | "landscape";
+};
+
+// Normalize variant suffixes (e.g. -min, -square, -crop, -bg) to group duplicates
+function normalizeBase(name: string) {
+  let out = name;
+  // strip extension if any slipped in (safety)
+  out = out.replace(/\.(jpg|png)$/i, "");
+  // repeatedly remove trailing variant tokens
+  for (let i = 0; i < 3; i++) {
+    out = out.replace(/-(min|square|crop|header|bg)$/i, "");
+  }
+  return out;
+}
+
+type RawItem = GalleryItem & { name: string; baseKey: string; hash: string };
+
+const excludeSet = new Set<string>(Array.isArray((meta as any).exclude) ? (meta as any).exclude.map((s: string) => s.replace(/\.(jpg|png)$/i, "")) : []);
+
+const rawItems: RawItem[] = Object.entries(modules)
+  .filter(([path]) => !/logo|site-logo/i.test(path))
+  .map(([modPath, img]) => {
+    const file = modPath.split("/").pop() || "image";
+    const name = file.replace(/\.(jpg|png)$/i, "");
+    const baseKey = normalizeBase(name);
+    const metaEntry = (meta as any)[baseKey] || (meta as any)[name] || {};
+    const title = (metaEntry.title as string) || toTitle(baseKey);
+    const description = (metaEntry.description as string) || "";
+    const asset = img as ImageMetadata;
+    const ratio = asset.width && asset.height ? asset.width / asset.height : 1;
+    let shape: GalleryItem["shape"] = "square";
+    if (ratio >= 1.3) shape = "landscape";
+    else if (ratio <= 0.8) shape = "portrait";
+    const colSpan = shape === "landscape" ? 2 : 1;
+    // compute a content hash to drop exact binary duplicates even if filenames differ
+    const filePath = path.join(process.cwd(), "src", "assets", "images", file);
+    const buf = fs.readFileSync(filePath);
+    const hash = crypto.createHash("md5").update(buf).digest("hex");
+    return { asset, url: (img as any).src as string, title, description, ratio, colSpan, shape, name, baseKey, hash };
+  })
+  .filter((it) => !excludeSet.has(it.name) && !excludeSet.has(it.baseKey));
+
+// Step 1: drop exact binary duplicates (same MD5)
+const byHash = new Map<string, RawItem>();
+for (const it of rawItems) {
+  const prev = byHash.get(it.hash);
+  if (!prev || (it.asset.width || 0) > (prev.asset.width || 0)) byHash.set(it.hash, it);
+}
+
+// Step 2: collapse common suffix variants (same baseKey)
+const byBase = new Map<string, RawItem>();
+for (const it of byHash.values()) {
+  const prev = byBase.get(it.baseKey);
+  if (!prev || (it.asset.width || 0) > (prev.asset.width || 0)) byBase.set(it.baseKey, it);
+}
+
+const items: GalleryItem[] = Array.from(byBase.values())
+  .map(({ name: _n, baseKey: _b, ...rest }) => rest)
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// Precompute a large image URL for the lightbox so the same source is used consistently
+const viewItems = await Promise.all(
+  items.map(async (it) => {
+    const full = await getImage({ src: it.asset, width: 1600, format: "jpg" });
+    return { ...it, fullUrl: full.src } as (GalleryItem & { fullUrl: string });
+  })
+);
+---
+
+<section id="gallery" class="site-container scroll-mt-10 py-8 md:py-12">
+  <div class="mx-auto max-w-6xl text-center">
+    <h1 class="h2 text-pretty uppercase">Gallery</h1>
+  </div>
+
+  <div class="gallery__masonry mt-8 md:mt-12">
+    {viewItems.map((item, idx) => (
+      <div class="gallery__item">
+        <button
+          class={`gallery__tile group relative w-full overflow-hidden rounded`}
+          data-index={idx}
+          data-full={item.fullUrl}
+          data-title={item.title}
+          data-description={item.description}
+          aria-label={`Open ${item.title}`}
+        >
+          <Image
+            src={item.asset}
+            alt={item.title}
+            width={900}
+            densities={[1.5, 2]}
+            class="block h-auto w-full transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        </button>
+      </div>
+    ))}
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
+    <button id="lightbox__prev" class="lightbox__nav left" aria-label="Previous image">❮</button>
+    <div class="relative max-h-[90svh] w-full max-w-5xl overflow-auto rounded bg-base-50 p-4 shadow-xl">
+      <button id="lightbox__close" class="absolute right-3 top-3 text-2xl" aria-label="Close">×</button>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="md:col-span-2">
+          <img id="lightbox__img" alt="" class="mx-auto max-h-[70svh] w-full object-contain" />
+        </div>
+        <div class="md:col-span-1">
+          <h2 id="lightbox__title" class="h3"></h2>
+          <p id="lightbox__desc" class="mt-2 opacity-80"></p>
+        </div>
+      </div>
+    </div>
+    <button id="lightbox__next" class="lightbox__nav right" aria-label="Next image">❯</button>
+  </div>
+</section>
+
+<script>
+  const overlay = document.getElementById("lightbox");
+  const overlayImg = document.getElementById("lightbox__img") as HTMLImageElement;
+  const overlayTitle = document.getElementById("lightbox__title") as HTMLElement;
+  const overlayDesc = document.getElementById("lightbox__desc") as HTMLElement;
+  const btnClose = document.getElementById("lightbox__close") as HTMLButtonElement;
+  const btnPrev = document.getElementById("lightbox__prev") as HTMLButtonElement;
+  const btnNext = document.getElementById("lightbox__next") as HTMLButtonElement;
+  const tiles = Array.from(document.querySelectorAll('.gallery__tile')) as HTMLElement[];
+  let currentIndex = -1;
+
+  function setLightbox(full: string, title: string, description: string) {
+    overlayImg.src = full;
+    overlayTitle.textContent = title;
+    overlayDesc.textContent = description || "";
+  }
+  function openLightboxByIndex(i: number) {
+    if (!tiles.length) return;
+    currentIndex = (i + tiles.length) % tiles.length;
+    const tile = tiles[currentIndex];
+    setLightbox(
+      tile.getAttribute('data-full') || '',
+      tile.getAttribute('data-title') || '',
+      tile.getAttribute('data-description') || ''
+    );
+    overlay?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    overlay?.classList.add("hidden");
+    overlayImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const tile = target.closest(".gallery__tile") as HTMLElement | null;
+    if (tile) {
+      const idx = tiles.indexOf(tile);
+      openLightboxByIndex(idx);
+      return;
+    }
+    if (e.target === overlay) closeLightbox();
+  });
+  btnClose?.addEventListener("click", closeLightbox);
+  btnPrev?.addEventListener('click', (e) => { e.stopPropagation(); openLightboxByIndex(currentIndex - 1); });
+  btnNext?.addEventListener('click', (e) => { e.stopPropagation(); openLightboxByIndex(currentIndex + 1); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+    if (!overlay || overlay.classList.contains('hidden')) return;
+    if (e.key === 'ArrowLeft') openLightboxByIndex(currentIndex - 1);
+    if (e.key === 'ArrowRight') openLightboxByIndex(currentIndex + 1);
+  });
+</script>
+
+<style>
+  /* minimal focus style for tiles */
+  .gallery__tile:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
+  #lightbox { display: none; }
+  #lightbox:not(.hidden) { display: flex; }
+  .gallery__tile { position: relative; display: block; }
+  .gallery__masonry {
+    column-count: 2;
+    column-gap: 0.75rem; /* ~gap-3 */
+  }
+  .gallery__item { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 0.75rem; }
+  @media (min-width: 640px) { /* sm */
+    .gallery__masonry { column-count: 3; }
+  }
+  @media (min-width: 768px) { /* md */
+    .gallery__masonry { column-count: 4; }
+  }
+  @media (min-width: 1024px) { /* lg */
+    .gallery__masonry { column-count: 5; }
+  }
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 60;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.85);
+    display: grid;
+    place-items: center;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  .lightbox__nav.left { left: 1rem; }
+  .lightbox__nav.right { right: 1rem; }
+  .lightbox__nav:hover { background: rgba(255,255,255,1); }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__tile img { transition: none; }
+  }
+</style>
