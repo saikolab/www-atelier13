@@ -1,0 +1,7 @@
+# Top-level configuration
+name = "www-atelier13"
+main = "src/pages/index.astro"
+compatibility_date = "2022-07-12"
+
+workers_dev = false
+route = { pattern = "atelier13interiors.com/*", zone_name = "atelier13interiors.com" }
