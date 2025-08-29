@@ -1,27 +1,28 @@
 ---
 // src/pages/[lang]/[page].astro
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import { LOCALES, type Locale } from "@/i18n/config";
+import { getCollection, render } from "astro:content";
+import type { Locale } from "@/i18n/config";
 
 // Build static paths for every localized "otherPages" entry
 export async function getStaticPaths() {
   const entries = await getCollection("otherPages");
-  return entries.map((entry) => {
-    // derive lang from frontmatter (preferred) or from folder prefix in slug
-    const lang: Locale =
-      (entry.data as any).lang ??
-      ((entry.slug.startsWith("el/") ? "el" : "en") as Locale);
-
-    // strip leading "en/" or "el/" from slug so [page] is just the rest
-    const page = entry.slug.replace(/^en\/|^el\//, "");
-    return { params: { lang, page }, props: { entry, lang } };
-  });
+  return entries
+    .filter((entry) => {
+      const fmLang = (entry.data as any).lang as string | undefined;
+      const raw = String(entry.slug ?? entry.id);
+      return fmLang === "en" || raw.startsWith("en/");
+    })
+    .map((entry) => {
+      const raw = String(entry.slug ?? entry.id);
+      const page = raw.replace(/^en\/|^el\//, "");
+      return { params: { page }, props: { entry, lang: "en" as Locale } };
+    });
 }
 
 const { entry, lang } = Astro.props as { entry: any; lang: Locale };
 const { title, description } = entry.data;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
