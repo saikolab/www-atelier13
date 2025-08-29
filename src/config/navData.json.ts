@@ -21,17 +21,17 @@ const navConfig: navItem[] = [
 		text: "portfolios",
 		link: "/portfolio/",
 	},
-	{
-		text: "Pricing",
-		link: "/#pricing",
-	},
+    {
+        text: "Services",
+        link: "/#pricing",
+    },
 	{
 		text: "Pages",
 		dropdown: [
-			{
-				text: "Portfolio",
-				link: "/portfolio/couple-1/",
-			},
+            {
+                text: "Project",
+                link: "/portfolio/couple-1/",
+            },
 			{
 				text: "Legal",
 				link: "/privacy-policy/",

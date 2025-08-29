@@ -1,6 +1,6 @@
 ---
-title: A mountain escape
-description: Transform your wedding moments into lasting memories amidst California's majestic mountains.
+title: Μινιμαλιστική ανανέωση διαμερίσματος
+description: Μια ήρεμη και λειτουργική αναδιαμόρφωση σαλονιού με ουδέτερη παλέτα, υφές και έξυπνους αποθηκευτικούς χώρους.
 heroImage: ./couple-9-square.jpg
 date: "Aug 5 2024"
 location: Malibu, California
@@ -10,4 +10,4 @@ order: 1
 lang: "el"
 ---
 
-This Malibu wedding was a breathtaking affair. The stunning mountain views provided a picturesque backdrop. The photographs beautifully captured the intimate moments, the vibrant energy, and the overall romantic ambiance of the day.
+Ένα μικρό διαμέρισμα στην πόλη επανασχεδιάστηκε για άνεση και καθαρότητα. Βελτιώσαμε τη διαρρύθμιση, προσθέσαμε ζεστούς ουδέτερους τόνους και φυσικά υλικά, και ενσωματώσαμε κρυφούς αποθηκευτικούς χώρους. Αποτέλεσμα: ένας φωτεινός, ζεστός χώρος που δείχνει μεγαλύτερος και πιο προσωπικός.

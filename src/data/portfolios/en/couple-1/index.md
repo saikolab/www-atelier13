@@ -1,6 +1,6 @@
 ---
-title: A mountain escape
-description: Transform your wedding moments into lasting memories amidst California's majestic mountains.
+title: Minimal apartment refresh
+description: A calm and functional living room transformation with a neutral palette, layered textures, and smart storage.
 heroImage: ./couple-9-square.jpg
 date: "Aug 5 2024"
 location: Malibu, California
@@ -10,4 +10,4 @@ order: 1
 lang: "en"
 ---
 
-This Malibu wedding was a breathtaking affair. The stunning mountain views provided a picturesque backdrop. The photographs beautifully captured the intimate moments, the vibrant energy, and the overall romantic ambiance of the day.
+A compact city apartment redesigned for comfort and clarity. We reworked the layout, introduced warm neutrals and natural materials, and added concealed storage to keep surfaces clean. The result: a cozy, light-filled space that feels larger and more personal.

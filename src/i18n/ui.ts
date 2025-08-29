@@ -10,8 +10,8 @@ const UI = {
   hero: {
     title: { en: 'Atelier 13 Interiors', el: 'Atelier 13 Interiors' },
     subtitle: {
-      en: "Transform your living space, enhance your quality of life, optimise your investment's potential.",
-      el: 'Μεταμορφώστε τον χώρο σας, βελτιώστε την ποιότητα ζωής, μεγιστοποιήστε την αξία της επένδυσής σας.',
+      en: "Transform spaces with thoughtful, functional, and timeless interior design.",
+      el: 'Μεταμορφώνουμε χώρους με προσεγμένο, λειτουργικό και διαχρονικό σχεδιασμό.',
     },
     cta: { en: "Let's get in touch", el: 'Ας μιλήσουμε' },
   },
@@ -37,10 +37,10 @@ const UI = {
   },
     portfolioSection: {
     headline: {
-        en: "The moments you'll want to relive in a timeless, romantic, and artistic style.",
-        el: "Στιγμές που θα θέλετε να ζείτε ξανά με διαχρονικό, ρομαντικό και καλλιτεχνικό ύφος.",
+        en: "Elevated interiors designed for how you live and work.",
+        el: "Εσωτερικοί χώροι υψηλής αισθητικής για τον τρόπο που ζείτε και εργάζεστε.",
     },
-    viewAll: { en: "View all portfolios", el: "Δείτε όλα τα έργα" },
+    viewAll: { en: "View all projects", el: "Δείτε όλα τα έργα" },
     fallback: {
         en: "More projects in this language are coming soon.",
         el: "Περισσότερα έργα στη γλώσσα αυτή έρχονται σύντομα.",

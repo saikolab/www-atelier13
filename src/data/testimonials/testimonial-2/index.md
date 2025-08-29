@@ -1,6 +1,6 @@
 ---
-title: HANNAH & MARCO
-testimonial: Hiring Jenna was one of the best decisions we made for our wedding. Not only was their work incredibly professional and artistic, but they also made us feel so comfortable and at ease throughout the entire process.
+title: ELENA & NIKOS
+testimonial: From the first consultation to the final styling, the process was seamless. They understood our needs and delivered a design that elevated our everyday life. Highly recommended.
 image: ./couple-2-crop.jpg
 order: 1
 ---

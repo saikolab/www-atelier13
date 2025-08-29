@@ -15,6 +15,16 @@ interface Props {
 }
 
 const { startStyle = "default", lang, rest } = Astro.props as Props;
+
+// Flag emoji and accessible names per locale
+const FLAG: Record<Locale, string> = {
+  en: "🇬🇧",
+  el: "🇬🇷",
+};
+const LANG_NAME: Record<Locale, string> = {
+  en: "English",
+  el: "Ελληνικά",
+};
 ---
 
 <div
@@ -52,8 +62,12 @@ const { startStyle = "default", lang, rest } = Astro.props as Props;
               <a
                 href={localizedPath(loc, Astro.url.pathname.replace(/^\/(en|el)(?=\/|$)/, "") || "/")}
                 aria-current={loc === lang ? "page" : undefined}
+                aria-label={LANG_NAME[loc]}
+                title={LANG_NAME[loc]}
+                class:list={["text-xl leading-none", { "opacity-60": loc !== lang }]}
               >
-                {loc.toUpperCase()}
+                <span aria-hidden="true">{FLAG[loc]}</span>
+                <span class="sr-only">{LANG_NAME[loc]}</span>
               </a>
             </li>
           ))}

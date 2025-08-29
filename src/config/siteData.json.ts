@@ -16,11 +16,11 @@ export interface SiteDataProps {
 
 // Update this file with your site specific information
 const siteData: SiteDataProps = {
-	name: "Horizon Photography",
+    name: "Atelier 13 Interiors",
 	// Your website's title and description (meta fields)
-	title: "Horizon - a beautiful photography website template made with Astro and Tailwind CSS",
-	description:
-		"Get your next website up and running quickly with our beautiful website theme designed using Astro and Tailwind CSS. Perfect for freelancers, developers, startups, and personal use.",
+    title: "Atelier 13 — Interior design studio",
+    description:
+        "We design thoughtful, functional interiors for homes and small businesses. From concept to renovation, we bring spaces to life.",
 	useViewTransitions: true,
 	// Your information!
 	author: {

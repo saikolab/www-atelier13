@@ -14,54 +14,52 @@ interface pricingItem {
 	image: ImageMetadata; // imported image
 }
 
-import image3 from "@assets/images/couple-1-square.jpg";
-import image1 from "@assets/images/couple-5-min.jpg";
-import image2 from "@assets/images/couple-6-crop.jpg";
+import image3 from "@assets/images/hero-bg-min.jpg";
+import image1 from "@assets/images/hero-bg-min.jpg";
+import image2 from "@assets/images/hero-bg-min.jpg";
 
 // This is designed for 3 pricing items, but can be modified to support more
 const pricingData: pricingItem[] = [
-	{
-		name: "Elopement",
-		featured: false,
-		price: 1999,
-		features: [
-			"200+ Professionally Edited Photos",
-			"Private Online Gallery",
-			"*Additional Charge Based On Travel Distance",
-			"*Additional Charge For Videography",
-		],
-		image: image1,
-	},
-	{
-		name: "Wedding",
-		featured: true,
-		price: 2999,
-		features: [
-			"300+ Professionally Edited Photos",
-			"Private Online Gallery",
-			"All-Day Photography Coverage",
-			"*Additional Charge For Videography",
-		],
-		image: image2,
-	},
-	{
-		name: "Engagement",
-		featured: false,
-		price: 799,
-		features: [
-			"100+ Professionally Edited Photos",
-			"Private Online Gallery",
-			"*Additional Charge Based On Travel Distance",
-		],
-		image: image3,
-	},
+  {
+    name: "Consultation",
+    featured: false,
+    price: 250,
+    features: [
+      "On-site or virtual session",
+      "Actionable design recommendations",
+      "Follow-up summary & next steps",
+    ],
+    image: image1,
+  },
+  {
+    name: "Concept & Styling",
+    featured: true,
+    price: 1800,
+    features: [
+      "Mood boards & material palette",
+      "Room layout & furniture plan",
+      "Shopping list & styling guide",
+    ],
+    image: image2,
+  },
+  {
+    name: "Full Renovation",
+    featured: false,
+    price: 4800,
+    features: [
+      "Design development & drawings",
+      "Contractor coordination",
+      "Sourcing & site supervision",
+    ],
+    image: image3,
+  },
 ];
 ---
 
 <section id="pricing" class="mx-auto max-w-6xl scroll-mt-10 px-4 py-8 md:py-12">
-	<div class="mx-auto max-w-6xl text-center">
-		<h2 class="h2 text-pretty uppercase">Photography Packages</h2>
-	</div>
+    <div class="mx-auto max-w-6xl text-center">
+        <h2 class="h2 text-pretty uppercase">Design Services</h2>
+    </div>
 
 	<!-- works for 3 pricing plans, adjust grid cols here to support more or less -->
 	<div
