@@ -1,6 +1,13 @@
 import type { Locale } from './config';
 
 const UI = {
+  buttons: {
+    viewMore: { en: 'View More', el: 'Δείτε περισσότερα' },
+    getQuote: { en: 'Get a quote', el: 'Λάβετε προσφορά' },
+  },
+  testimonialsSection: {
+    title: { en: 'What our clients say', el: 'Τι λένε οι πελάτες μας' },
+  },
   nav: {
     home: { en: 'Home', el: 'Αρχική' },
     portfolio: { en: 'Portfolio', el: 'Έργα' },

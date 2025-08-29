@@ -6,14 +6,28 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
+import { getLangFromUrl } from "@/i18n/utils";
+import type { Locale } from "@/i18n/config";
 
 interface Props {
-	testimonial: CollectionEntry<"testimonials">;
-	imagePosition?: "top" | "bottom";
+  testimonial: CollectionEntry<"testimonials">;
+  imagePosition?: "top" | "bottom";
+  lang?: Locale;
 }
 
-const { testimonial, imagePosition = "top" } = Astro.props as Props;
-const { title, testimonial: testimonialText, image } = testimonial.data;
+const { testimonial, imagePosition = "top", lang = getLangFromUrl(Astro.url) } = Astro.props as Props;
+const data = testimonial.data as any;
+
+function pickLocalized(base: string): string {
+  const specific = data[`${base}_${lang}`];
+  return (typeof specific === "string" && specific.length > 0)
+    ? specific
+    : (typeof data[base] === "string" ? data[base] : "");
+}
+
+const title = pickLocalized("title");
+const testimonialText = pickLocalized("testimonial");
+const { image } = data;
 ---
 
 <div class="grid gap-1 lg:auto-rows-fr">

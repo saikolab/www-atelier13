@@ -1,6 +1,7 @@
 ---
-title: MARIA
-testimonial: Professional, responsive, and creative. The kitchen redesign maximized storage and flow without compromising on style. It has completely changed how we use the space.
-image: ./couple-7-crop.jpg
+title_el: Αλέξανδρος, οικιακή ανακαίνιση
+testimonial_el: Επαγγελματίες, γρήγοροι στην απόκριση και δημιουργικοί. Ο σχεδιασμός της κουζίνας μεγιστοποίησε τον αποθηκευτικό χώρο ενώ ταυτόχρονα αύξησε τον χώρο πο κινούμαστε. Άλλαξε τελείως το πώς (και πόσο) χρησιμοποιούμε την κουζίνα μας!
+testimonial_en: Alexandros
+image: ./k17-009.jpg
 order: 1
 ---

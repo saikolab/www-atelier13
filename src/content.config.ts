@@ -53,8 +53,13 @@ const testimonials = defineCollection({
   }),
   schema: ({ image }) =>
     z.object({
-      title: z.string(),
-      testimonial: z.string(),
+      // i18n-friendly fields; either base or suffixed keys may be used
+      title: z.string().optional(),
+      testimonial: z.string().optional(),
+      title_en: z.string().optional(),
+      title_el: z.string().optional(),
+      testimonial_en: z.string().optional(),
+      testimonial_el: z.string().optional(),
       image: image(),
       order: z.number(),
       draft: z.boolean().optional(),

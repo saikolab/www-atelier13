@@ -61,6 +61,8 @@ const otherPortfolios = await getCollection(
 			{title}
 		</h1>
 
+		<p class="mt-4 text-center opacity-80 md:text-lg">{description}</p>
+
 		<!-- hero image -->
 		<div class="mt-6 h-auto max-h-[50vh] w-full overflow-hidden md:max-h-[80vh]">
 			<Image
@@ -86,8 +88,8 @@ const otherPortfolios = await getCollection(
 			<span>{location}</span>
 		</h2>
 
-		<!-- slot really only fuctions as a longer description -->
-		<div class="description mt-6 text-center text-pretty md:text-lg">
+		<!-- Long-form markdown content -->
+		<div class="markdown-content mt-6 md:text-lg">
 			<slot />
 		</div>
 
