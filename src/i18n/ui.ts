@@ -47,8 +47,8 @@ const UI = {
   contactSection: {
     title: { en: "Let’s talk!", el: "Ας μιλήσουμε!" },
     body: {
-      en: "Have questions or want to discuss your space? We’re here to help. Fill out the form and we’ll get back to you within 1–2 business days. Let’s design a space you love.",
-      el: "Έχετε απορίες ή θέλετε να μιλήσουμε για τον χώρο σας; Είμαστε εδώ για να βοηθήσουμε. Συμπληρώστε τη φόρμα και θα σας απαντήσουμε εντός 1–2 εργάσιμων ημερών. Ας σχεδιάσουμε έναν χώρο που θα αγαπάτε.",
+      en: "Have questions or want to discuss your space? Choose the channel you prefer and we’ll get back to you as soon as possible.",
+      el: "Έχετε απορίες ή θέλετε να μιλήσουμε για τον χώρο σας; Διαλέξτε το κανάλι που προτιμάτε και θα σας απαντήσουμε το συντομότερο.",
     },
     imageAlt: { en: "interior detail", el: "λεπτομέρεια εσωτερικού" },
   },
