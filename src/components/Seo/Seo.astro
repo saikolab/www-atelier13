@@ -1,5 +1,6 @@
 ---
 import siteData from "@config/siteData.json";
+import { keywords } from "@config/seo";
 import { getImage } from "astro:assets";
 import { SEO } from "astro-seo";
 
@@ -75,3 +76,6 @@ const imageUrl =
 	noindex={noindex}
 	nofollow={noindex}
 />
+
+<!-- Location & service keywords for SEO targeting -->
+<meta name="keywords" content={keywords.join(", ")} />

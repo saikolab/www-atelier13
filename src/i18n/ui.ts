@@ -22,8 +22,8 @@ const UI = {
   hero: {
     title: { en: 'Atelier 13 Interiors', el: 'Atelier 13 Interiors' },
     subtitle: {
-      en: "Transform spaces with thoughtful, functional, and timeless interior design.",
-      el: 'Μεταμορφώνουμε χώρους με προσεγμένο, λειτουργικό και διαχρονικό σχεδιασμό.',
+      en: "Transform spaces with thoughtful, functional, and timeless interior design across Mytilene and Lesvos (North Aegean).",
+      el: 'Μεταμορφώνουμε χώρους με προσεγμένο, λειτουργικό και διαχρονικό σχεδιασμό στη Μυτιλήνη και σε όλη τη Λέσβο (Βόρειο Αιγαίο).',
     },
     cta: { en: "Let's get in touch", el: 'Ας μιλήσουμε' },
   },
