@@ -8,6 +8,7 @@ import navData from "@config/navData.json";
 import { localizedPath } from "@/i18n/utils";
 import { LOCALES, type Locale } from "@/i18n/config";
 import { t } from "@/i18n/ui";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   startStyle?: "default" | "white";
@@ -88,7 +89,16 @@ const localizedNavData = navData.map((item) => {
           }
         </ul>
         <!-- Language Switcher -->
-        <ul class="flex items-center gap-3 ml-4">
+        <a
+          href="tel:+302251200915"
+          class="ml-4 mr-2 text-xl leading-none hover:opacity-80"
+          aria-label={`${t(lang,'contactPage','phone')}: +30 2251 200915`}
+          title={`+30 2251 200915`}
+        >
+          <Icon name="tabler:phone" class="inline-block align-middle size-6" />
+          <span class="sr-only">{t(lang,'contactPage','phone')}</span>
+        </a>
+        <ul class="flex items-center gap-3">
           {LOCALES.map((loc) => (
             <li>
               <a
@@ -108,6 +118,10 @@ const localizedNavData = navData.map((item) => {
 
       <!-- mobile -->
       <div class="md:hidden flex items-center gap-2">
+        <a href="tel:+302251200915" aria-label={`Call +30 2251 200915`} class="px-1">
+          <Icon name="tabler:phone" class="size-6" />
+          <span class="sr-only">{t(lang,'contactPage','phone')}</span>
+        </a>
         <MobileNav />
       </div>
     </div>

@@ -37,6 +37,7 @@ export default defineConfig({
 					"chevron-down",
 					"category",
 					"calendar-event",
+					"phone",
 				],
 			},
 		}),
