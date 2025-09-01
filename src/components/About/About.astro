@@ -3,24 +3,26 @@
  * * About section
  */
 
-import profileImage from "@assets/images/hero-bg-min.jpg";
+import profileImage from "@assets/images/bog-01.jpg";
 import { Image } from "astro:assets";
+import type { Locale } from "@/i18n/config";
+import { getLangFromUrl } from "@/i18n/utils";
+import { t } from "@/i18n/ui";
+
+interface Props { lang?: Locale }
+const urlLang = getLangFromUrl(Astro.url);
+const { lang = urlLang } = Astro.props as Props;
 ---
 
 <section id="about" class="site-container scroll-mt-10 py-8 md:py-12">
 	<div class="flex flex-col md:flex-row">
-		<div class="md:w-2/3">
-        <h2 class="h3 text-primary-500 text-pretty uppercase">Meet your designer</h2>
-        <h3 class="h2 mt-4">Atelier 13</h3>
+    <div class="md:w-2/3">
+        <h2 class="h3 text-primary-500 text-pretty uppercase">{t(lang,'aboutSection','title')}</h2>
+        <h3 class="h2 mt-4">{t(lang,'aboutSection','studio')}</h3>
 			<div class="bg-base-100 mt-8 p-8 md:mb-20 lg:text-lg">
-				<p>
-                We craft interiors that balance aesthetics and function. From concept to completion, we
-                translate your vision into spaces that feel effortless, intentional, and uniquely yours.
-                Whether it’s a compact apartment refresh or a full renovation, we manage details so you
-                can enjoy the results.
-				</p>
+				<p>{t(lang,'aboutSection','body')}</p>
 				<div class="flex w-3/4 justify-end">
-                <p class="font-heading-1 text-3xl italic">- Atelier 13</p>
+                <p class="font-heading-1 text-3xl italic">{t(lang,'aboutSection','signature')}</p>
 				</div>
 			</div>
 		</div>
@@ -28,7 +30,7 @@ import { Image } from "astro:assets";
 			<div class="my-auto aspect-[3/4] w-full overflow-hidden">
 				<Image
 					src={profileImage}
-					alt="Jenna Marie"
+					alt={t(lang,'aboutSection','imageAlt')}
 					width={450}
 					densities={[1.5, 2]}
 					class="h-auto min-h-full w-full min-w-full object-cover"

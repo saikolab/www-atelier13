@@ -5,14 +5,15 @@
 
 import ContactForm from "@components/Forms/ContactForm.astro";
 import { Image } from "astro:assets";
+import type { Locale } from "@/i18n/config";
+import { getLangFromUrl } from "@/i18n/utils";
+import { t } from "@/i18n/ui";
 
-interface Props {
-	class?: string;
-}
+interface Props { class?: string; lang?: Locale }
+const urlLang = getLangFromUrl(Astro.url);
+const { class: className, lang = urlLang } = Astro.props as Props;
 
-const { class: className } = Astro.props as Props;
-
-import ringsImage from "@assets/images/hero-bg-min.jpg";
+import ringsImage from "@assets/images/k17-019.jpg";
 ---
 
 <section
@@ -20,17 +21,14 @@ import ringsImage from "@assets/images/hero-bg-min.jpg";
 	class="mx-auto max-w-md scroll-mt-10 px-4 py-8 md:max-w-6xl md:py-12"
 	class:list={[className]}
 >
-	<h2 class="h2 md:px-12 lg:text-6xl">Lets Talk!</h2>
+	<h2 class="h2 md:px-12 lg:text-6xl">{t(lang, 'contactSection', 'title')}</h2>
 	<div class="grid gap-y-10 md:grid-cols-2">
 		<div class="border-primary-300 pt-8 md:border-r md:pr-20 md:pl-12">
-			<p class="description text-lg">
-				Have questions or want to discuss your space? We’re here to help. Fill out the form and we’ll
-				get back to you within 1–2 business days. Let’s design a space you love.
-			</p>
+			<p class="description text-lg">{t(lang, 'contactSection', 'body')}</p>
 			<div class="mx-auto mt-8 aspect-square overflow-hidden">
 				<Image
 					src={ringsImage}
-					alt="interior detail"
+					alt={t(lang, 'contactSection', 'imageAlt')}
 					width={450}
 					densities={[1.5, 2]}
 					class="h-full w-full object-cover"
@@ -38,7 +36,7 @@ import ringsImage from "@assets/images/hero-bg-min.jpg";
 			</div>
 		</div>
 		<div class="md:pr-12 md:pl-20">
-			<ContactForm />
+			<ContactForm lang={lang} />
 		</div>
 	</div>
 </section>

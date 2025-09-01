@@ -2,6 +2,8 @@
 import SiteLogo from "@components/SiteLogo/SiteLogo.astro";
 import siteData from "@config/siteData.json";
 import { Icon } from "astro-icon/components";
+import { localizedPath } from "@/i18n/utils";
+import { t } from "@/i18n/ui";
 
 import FooterLink from "./FooterLink.astro";
 
@@ -18,40 +20,37 @@ const { lang = "en" } = Astro.props as Props;
         <SiteLogo />
       </div>
       <div class="col-span-2 flex justify-end gap-4">
-        <FooterLink href="/#portfolio">Portfolio</FooterLink>
+        <FooterLink href={localizedPath(lang, "/#portfolio")}>
+          {t(lang, 'nav', 'portfolio')}
+        </FooterLink>
+        <FooterLink href={localizedPath(lang, "/gallery")}>
+          {t(lang, 'nav', 'gallery')}
+        </FooterLink>
       </div>
       <div class="hidden justify-center text-center md:flex">
         <SiteLogo />
       </div>
       <div class="flex gap-4 md:col-span-2">
-        <FooterLink href="/#pricing">Services</FooterLink>
-        <FooterLink href="/#contact">Contact</FooterLink>
+        <FooterLink href={localizedPath(lang, "/#pricing")}>
+          {t(lang, 'nav', 'services')}
+        </FooterLink>
+        <FooterLink href={localizedPath(lang, "/#contact")}>
+          {t(lang, 'nav', 'contact')}
+        </FooterLink>
       </div>
     </div>
 
     <!-- lets connect -->
     <div class="description mx-auto mt-6 max-w-[28rem] px-4 text-center">
       <p>
-        <span class="italic">Let’s connect!</span> Follow our work for interior design projects,
-        before/after transformations, and ideas for your next space.
+        <span class="italic">{t(lang, 'footer', 'connectLead')}</span>
+        {` ${t(lang, 'footer', 'connectText')}`}
       </p>
     </div>
 
     <!-- socials -->
     <div class="text-primary-500 mt-8 flex justify-center gap-4">
-      <a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-        <Icon name="socials/mdi-facebook" class="size-6 transition hover:opacity-80" />
-        <span class="sr-only">Facebook</span>
-      </a>
-      <a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-        <Icon name="socials/mdi-twitter" class="size-6 transition hover:opacity-80" />
-        <span class="sr-only">Twitter</span>
-      </a>
-      <a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-        <Icon name="socials/mdi-youtube" class="size-6 transition hover:opacity-80" />
-        <span class="sr-only">Youtube</span>
-      </a>
-      <a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.instagram.com/atelier13.interiors/" target="_blank" rel="noopener noreferrer">
         <Icon name="socials/basil-instagram-solid" class="size-6 transition hover:opacity-80" />
         <span class="sr-only">Instagram</span>
       </a>
@@ -60,10 +59,10 @@ const { lang = "en" } = Astro.props as Props;
     <!-- copyright -->
     <div class="mt-4 mb-2 text-center text-sm opacity-80">
       &copy; {today.getFullYear()} a theme by <a
-        href="https://cosmicthemes.com"
+        href="https://aorfanos.com"
         class="hover:text-primary-600 transition"
         target="_blank"
-        rel="noopener">Cosmic Themes</a
+        rel="noopener">Saikolab</a
       >
     </div>
   </div>
