@@ -13,6 +13,11 @@ const UI = {
     portfolio: { en: 'Portfolio', el: 'Έργα' },
     elements: { en: 'Elements', el: 'Στοιχεία' },
     contact: { en: 'Contact', el: 'Επικοινωνία' },
+    gallery: { en: 'Gallery', el: 'Συλλογή'},
+    services: { en: 'Services', el: 'Υπηρεσίες' },
+    pages: { en: 'Pages', el: 'Σελίδες' },
+    project: { en: 'About us', el: 'Σχετικά με εμάς' },
+    legal: { en: 'Legal', el: 'Νομικά' },
   },
   hero: {
     title: { en: 'Atelier 13 Interiors', el: 'Atelier 13 Interiors' },
@@ -41,6 +46,9 @@ const UI = {
   },
   footer: {
     rights: { en: 'All rights reserved.', el: 'Με την επιφύλαξη παντός δικαιώματος.' },
+  },
+  pricingSection: {
+    title: { en: 'Design Services', el: 'Υπηρεσίες σχεδιασμού' },
   },
     portfolioSection: {
     headline: {

@@ -4,6 +4,43 @@ import MobileNavDropdown from "@components/Nav/MobileNav/MobileNavDropdown.astro
 import NavLink from "@components/Nav/NavLink.astro";
 import navData from "@config/navData.json";
 import { Icon } from "astro-icon/components";
+import { getLangFromUrl, localizedPath } from "@/i18n/utils";
+import type { Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
+
+const lang: Locale = getLangFromUrl(Astro.url);
+
+type NavKey = "home" | "portfolio" | "elements" | "gallery" | "contact" | "services" | "pages" | "project" | "legal";
+const NAV_TEXT_MAP: Record<string, NavKey> = {
+  Home: "home",
+  portfolios: "portfolio",
+  Elements: "elements",
+  Services: "services",
+  Gallery: "gallery",
+  Pages: "pages",
+  Project: "project",
+  Legal: "legal",
+  Contact: "contact",
+};
+
+const localizedNavData = navData.map((item) => {
+  if ("dropdown" in item) {
+    return {
+      ...item,
+      text: NAV_TEXT_MAP[item.text] ? t(lang, "nav", NAV_TEXT_MAP[item.text]) : item.text,
+      dropdown: item.dropdown.map((d) => ({
+        ...d,
+        text: NAV_TEXT_MAP[d.text] ? t(lang, "nav", NAV_TEXT_MAP[d.text]) : d.text,
+        link: localizedPath(lang, d.link),
+      })),
+    } as typeof item;
+  }
+  return {
+    ...item,
+    text: NAV_TEXT_MAP[item.text] ? t(lang, "nav", NAV_TEXT_MAP[item.text]) : item.text,
+    link: localizedPath(lang, item.link),
+  } as typeof item;
+});
 ---
 
 <div id="mobile-nav__container">
@@ -39,7 +76,7 @@ import { Icon } from "astro-icon/components";
 				<ul class="mx-1 mt-2 text-xl">
 					{
 						// if dropdown exists, setup the dropdown, otherwise it is just a link
-						navData.map((navItem) =>
+						localizedNavData.map((navItem) =>
 							"dropdown" in navItem ? (
 								// non-mobile dropdown menu
 								<MobileNavDropdown navItem={navItem} />

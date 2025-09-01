@@ -5,6 +5,9 @@
 
 import Button from "@components/Button/Button.astro";
 import { Image } from "astro:assets";
+import type { Locale } from "@/i18n/config";
+import { getLangFromUrl } from "@/i18n/utils";
+import { t } from "@/i18n/ui";
 
 interface pricingItem {
 	name: string; // plan name
@@ -14,51 +17,95 @@ interface pricingItem {
 	image: ImageMetadata; // imported image
 }
 
-import image3 from "@assets/images/hero-bg-min.jpg";
-import image1 from "@assets/images/hero-bg-min.jpg";
-import image2 from "@assets/images/hero-bg-min.jpg";
+import image3 from "@assets/images/k17-005.jpg";
+import image1 from "@assets/images/k17-015.jpg";
+import image2 from "@assets/images/k17-017.jpg";
 
-// This is designed for 3 pricing items, but can be modified to support more
-const pricingData: pricingItem[] = [
-  {
-    name: "Consultation",
-    featured: false,
-    price: 250,
-    features: [
-      "On-site or virtual session",
-      "Actionable design recommendations",
-      "Follow-up summary & next steps",
-    ],
-    image: image1,
-  },
-  {
-    name: "Concept & Styling",
-    featured: true,
-    price: 1800,
-    features: [
-      "Mood boards & material palette",
-      "Room layout & furniture plan",
-      "Shopping list & styling guide",
-    ],
-    image: image2,
-  },
-  {
-    name: "Full Renovation",
-    featured: false,
-    price: 4800,
-    features: [
-      "Design development & drawings",
-      "Contractor coordination",
-      "Sourcing & site supervision",
-    ],
-    image: image3,
-  },
-];
+// i18n: detect language from props or URL
+interface Props { lang?: Locale }
+const urlLang = getLangFromUrl(Astro.url);
+const { lang = urlLang } = Astro.props as Props;
+
+// Localized pricing data (3 cards)
+const pricingDataByLang: Record<Locale, pricingItem[]> = {
+  en: [
+    {
+      name: "Consultation",
+      featured: false,
+      price: 250,
+      features: [
+        "On-site or virtual session",
+        "Actionable design recommendations",
+        "Follow-up summary & next steps",
+      ],
+      image: image1,
+    },
+    {
+      name: "Concept & Styling",
+      featured: true,
+      price: 1800,
+      features: [
+        "Mood boards & material palette",
+        "Room layout & furniture plan",
+        "Shopping list & styling guide",
+      ],
+      image: image2,
+    },
+    {
+      name: "Full Renovation",
+      featured: false,
+      price: 4800,
+      features: [
+        "Design development & drawings",
+        "Contractor coordination",
+        "Sourcing & site supervision",
+      ],
+      image: image3,
+    },
+  ],
+  el: [
+    {
+      name: "Συμβουλευτική",
+      featured: false,
+      price: 250,
+      features: [
+        "Συνάντηση στο χώρο ή εξ αποστάσεως",
+        "Πρακτικές προτάσεις σχεδιασμού",
+        "Σύνοψη και επόμενα βήματα",
+      ],
+      image: image1,
+    },
+    {
+      name: "Σχεδιαστική ιδέα & Styling",
+      featured: true,
+      price: 1800,
+      features: [
+        "Mood boards & παλέτα υλικών",
+        "Κάτοψη χώρου & σχέδιο επίπλων",
+        "Λίστα αγορών & οδηγός styling",
+      ],
+      image: image2,
+    },
+    {
+      name: "Ολική ανακαίνιση",
+      featured: false,
+      price: 4800,
+      features: [
+        "Ανάπτυξη σχεδίου & σχέδια",
+        "Συντονισμός συνεργείων",
+        "Προμήθειες & επίβλεψη έργου",
+      ],
+      image: image3,
+    },
+  ],
+};
+
+const pricingData: pricingItem[] = pricingDataByLang[lang];
 ---
 
 <section id="pricing" class="mx-auto max-w-6xl scroll-mt-10 px-4 py-8 md:py-12">
     <div class="mx-auto max-w-6xl text-center">
-        <h2 class="h2 text-pretty uppercase">Design Services</h2>
+        <h2 class="h2 text-pretty uppercase">{t(lang, 'pricingSection', 'title')}</h2>
     </div>
 
 	<!-- works for 3 pricing plans, adjust grid cols here to support more or less -->
@@ -88,7 +135,12 @@ const pricingData: pricingItem[] = [
 					</div>
 					<div class="border-primary-200 flex h-full flex-col justify-between border-2 border-t-0 pt-10 pb-10">
 						<div>
-							<h3 class="h2 text-center">{plan.name}</h3>
+							<h3
+								data-dynamic-title
+								class="font-heading-1 tracking-wide uppercase leading-tight text-center px-6 md:px-8 text-pretty break-words text-2xl md:text-[2.5rem]"
+							>
+								{plan.name}
+							</h3>
 
 							<ul class="mt-4 flex flex-col gap-3 px-8">
 								{plan.features.map((feature) => (
@@ -97,7 +149,7 @@ const pricingData: pricingItem[] = [
 							</ul>
 						</div>
 						<p class="font-decorative text-base-800 mt-6 flex justify-center text-center text-[5rem] leading-none">
-							${plan.price}
+							€{plan.price}
 							<span class="flex h-full text-[3.5rem]">+</span>
 						</p>
 					</div>
@@ -106,7 +158,40 @@ const pricingData: pricingItem[] = [
 		}
 	</div>
 
-	<div class="mt-12 flex justify-center">
-		<Button href="/#contact" variant="outline" class="px-8">Get a quote</Button>
-	</div>
+    <div class="mt-12 flex justify-center">
+        <Button href={`/${lang}/#contact`} variant="outline" class="px-8">{t(lang,'buttons','getQuote')}</Button>
+    </div>
 </section>
+
+<script>
+  function adjustTitles() {
+    const titles = document.querySelectorAll('[data-dynamic-title]') as NodeListOf<HTMLElement>;
+    titles.forEach((el) => {
+      // reset any prior inline styles
+      el.style.fontSize = '';
+
+      const cs = getComputedStyle(el);
+      const fontSizePx = parseFloat(cs.fontSize);
+      let lineHeightPx = cs.lineHeight === 'normal' ? fontSizePx * 1.25 : parseFloat(cs.lineHeight);
+
+      const isWrapped = el.scrollHeight > lineHeightPx * 1.2; // more than ~1 line
+      const isOverflowing = el.scrollWidth > el.clientWidth + 1; // safety margin
+
+      if (isWrapped || isOverflowing) {
+        // shrink one step: from 2xl->xl on small screens, from 2.5rem->2.25rem on md+
+        if (fontSizePx >= 36) {
+          el.style.fontSize = '2.25rem';
+        } else if (fontSizePx >= 20) {
+          el.style.fontSize = '1.25rem';
+        }
+      }
+    });
+  }
+
+  if (document.readyState !== 'loading') {
+    adjustTitles();
+  } else {
+    document.addEventListener('DOMContentLoaded', adjustTitles, { passive: true } as any);
+  }
+  window.addEventListener('resize', adjustTitles, { passive: true });
+</script>

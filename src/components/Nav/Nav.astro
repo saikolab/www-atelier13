@@ -7,6 +7,7 @@ import SiteLogo from "@components/SiteLogo/SiteLogo.astro";
 import navData from "@config/navData.json";
 import { localizedPath } from "@/i18n/utils";
 import { LOCALES, type Locale } from "@/i18n/config";
+import { t } from "@/i18n/ui";
 
 interface Props {
   startStyle?: "default" | "white";
@@ -25,6 +26,39 @@ const LANG_NAME: Record<Locale, string> = {
   en: "English",
   el: "Ελληνικά",
 };
+
+// Map template nav labels to translation keys
+type NavKey = "home" | "portfolio" | "elements" | "gallery" | "contact" | "services" | "pages" | "project" | "legal";
+const NAV_TEXT_MAP: Record<string, NavKey> = {
+  Home: "home",
+  portfolios: "portfolio",
+  Elements: "elements",
+  Services: "services",
+  Gallery: "gallery",
+  Pages: "pages",
+  Project: "project",
+  Legal: "legal",
+  Contact: "contact",
+};
+
+const localizedNavData = navData.map((item) => {
+  if ("dropdown" in item) {
+    return {
+      ...item,
+      text: NAV_TEXT_MAP[item.text] ? t(lang, "nav", NAV_TEXT_MAP[item.text]) : item.text,
+      dropdown: item.dropdown.map((d) => ({
+        ...d,
+        text: NAV_TEXT_MAP[d.text] ? t(lang, "nav", NAV_TEXT_MAP[d.text]) : d.text,
+        link: localizedPath(lang, d.link),
+      })),
+    } as typeof item;
+  }
+  return {
+    ...item,
+    text: NAV_TEXT_MAP[item.text] ? t(lang, "nav", NAV_TEXT_MAP[item.text]) : item.text,
+    link: localizedPath(lang, item.link),
+  } as typeof item;
+});
 ---
 
 <div
@@ -37,20 +71,20 @@ const LANG_NAME: Record<Locale, string> = {
     <div class="site-container flex h-16 w-full items-center justify-between gap-4">
       <a href={localizedPath(lang, "/")} class="mr-2 flex items-center gap-2">
         <SiteLogo />
-        <span class="sr-only">Home</span>
+        <span class="sr-only">{t(lang, 'nav', 'home')}</span>
       </a>
 
       <nav id="nav__links" class="ml-auto hidden items-center gap-x-2 md:flex">
         <ul class="flex items-center gap-x-4">
           {
-            navData.map((navItem) =>
+            localizedNavData.map((navItem) =>
               "dropdown" in navItem ? (
                 <NavDropdown navItem={{
                   ...navItem,
-                  dropdown: navItem.dropdown.map(d => ({ ...d, link: localizedPath(lang, d.link) }))
+                  dropdown: navItem.dropdown
                 }} class="text-base-900" />
               ) : (
-                <NavLink navItem={{ ...navItem, link: localizedPath(lang, navItem.link) }} class="h-10" />
+                <NavLink navItem={navItem} class="h-10" />
               ),
             )
           }

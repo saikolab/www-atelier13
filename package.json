@@ -44,6 +44,7 @@
 		"typescript-eslint": "8.32.0"
 	},
 	"overrides": {
-		"sharp": "^0.33.0"
+		"sharp": "^0.33.0",
+		"esbuild": "0.25.9"
 	}
 }
