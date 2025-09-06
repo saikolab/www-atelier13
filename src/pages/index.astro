@@ -1,6 +1,6 @@
 ---
 import { DEFAULT_LOCALE } from "@/i18n/config";
-const toPath = `/${DEFAULT_LOCALE}/`;
+const toPath = `/${DEFAULT_LOCALE}/coming-soon/`;
 const to = new URL(toPath, Astro.url);   // handles base paths if you ever set one
 Astro.redirect(to.pathname, 307);        // 307 is fine; 302/301 also OK
 ---

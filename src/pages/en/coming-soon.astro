@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Contact from "@/components/Contact/Contact.astro";
+import { Image } from "astro:assets";
+import siteLogo from "@assets/images/site-logo.png";
+---
+
+<BaseLayout
+  title="Website Under Development"
+  description="Our site is coming soon. Get in touch."
+  navStartStyle="white"
+  showFooter={false}
+  showNav={false}
+  lang="en"
+>
+  <header class="mx-auto flex justify-center px-4 pt-10">
+    <Image src={siteLogo} alt="Atelier 13" width={180} height={60} class="h-auto w-[180px]" />
+  </header>
+  <section class="mx-auto max-w-3xl px-4 py-16 text-center md:py-24">
+    <h1 class="mb-4 text-4xl font-bold tracking-tight md:text-5xl">We’re building something special</h1>
+    <p class="mx-auto mb-10 max-w-2xl text-lg opacity-80">
+      Our website is currently under development and will be with our customers soon.
+      In the meantime, feel free to reach out — we’d love to hear from you.
+    </p>
+  </section>
+
+  <Contact lang="en" />
+</BaseLayout>

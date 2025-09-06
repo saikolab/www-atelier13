@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Contact from "@/components/Contact/Contact.astro";
+import { Image } from "astro:assets";
+import siteLogo from "@assets/images/site-logo.png";
+---
+
+<BaseLayout
+  title="Ιστότοπος υπό κατασκευή"
+  description="Ο ιστότοπος έρχεται σύντομα. Επικοινωνήστε μαζί μας."
+  navStartStyle="white"
+  showFooter={false}
+  showNav={false}
+  lang="el"
+>
+  <header class="mx-auto flex justify-center px-4 pt-10">
+    <Image src={siteLogo} alt="Atelier 13" width={180} height={60} class="h-auto w-[180px]" />
+  </header>
+  <section class="mx-auto max-w-3xl px-4 py-16 text-center md:py-24">
+    <h1 class="mb-4 text-4xl font-bold tracking-tight md:text-5xl">Ερχόμαστε σύντομα</h1>
+    <p class="mx-auto mb-10 max-w-2xl text-lg opacity-80">
+      Ο ιστότοπος βρίσκεται υπό κατασκευή και θα είναι σύντομα κοντά στους πελάτες μας.
+      Μέχρι τότε, μπορείτε να επικοινωνήσετε μαζί μας — θα χαρούμε να σας ακούσουμε.
+    </p>
+  </section>
+
+  <Contact lang="el" />
+</BaseLayout>

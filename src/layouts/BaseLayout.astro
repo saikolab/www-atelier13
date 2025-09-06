@@ -12,6 +12,8 @@ interface Props {
   description: string;
   heroImage?: ImageMetadata;
   noindex?: boolean;
+  showFooter?: boolean;
+  showNav?: boolean;
   lang?: import("@/i18n/config").Locale;
 }
 
@@ -22,6 +24,8 @@ const {
   description,
   heroImage,
   noindex = false,
+  showFooter = true,
+  showNav = true,
   lang = DEFAULT_LOCALE,
 } = Astro.props as Props;
 ---
@@ -40,11 +44,11 @@ const {
   </head>
   <body id="body" class="bg-base-50 text-base-900">
     <div class="min-h-[100lvh]">
-      <Nav startStyle={navStartStyle} lang={lang} />
+      {showNav && <Nav startStyle={navStartStyle} lang={lang} />}
       <main>
         <slot />
       </main>
     </div>
-    <Footer lang={lang} />
+    {showFooter && <Footer lang={lang} />}
   </body>
 </html>
