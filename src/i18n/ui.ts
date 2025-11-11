@@ -41,6 +41,8 @@ const UI = {
     callNow: { en: 'Call now', el: 'Κλήση τώρα' },
     sendEmail: { en: 'Send email', el: 'Αποστολή email' },
     visitInstagram: { en: 'Visit Instagram', el: 'Προβολή στο Instagram' },
+    quoteForm: { en: 'Get a quote form', el: 'Φόρμα προσφοράς' },
+    openQuoteForm: { en: 'Fill out the form', el: 'Συμπληρώστε τη φόρμα' },
     copy: { en: 'Copy', el: 'Αντιγραφή' },
     copied: { en: 'Copied!', el: 'Αντιγράφηκε!' },
   },

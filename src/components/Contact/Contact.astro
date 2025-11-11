@@ -7,7 +7,7 @@ import { Icon } from "astro-icon/components";
 import contactData from "@config/contactData.json";
 import { Image } from "astro:assets";
 import type { Locale } from "@/i18n/config";
-import { getLangFromUrl } from "@/i18n/utils";
+import { getLangFromUrl, localizedPath } from "@/i18n/utils";
 import { t } from "@/i18n/ui";
 
 interface Props { class?: string; lang?: Locale }
@@ -28,6 +28,7 @@ try {
   const u = new URL(instagramUrl);
   instagramHandle = u.pathname.replace(/^\//, "");
 } catch {}
+const quoteFormHref = localizedPath(lang, "/get-a-quote");
 ---
 
 <section
@@ -102,6 +103,17 @@ try {
 						<span class="text-primary-600 text-sm">{t(lang, 'contactPage', 'visitInstagram')}</span>
 					</a>
 				)}
+
+				<a href={quoteFormHref} class="group flex items-center justify-between gap-4 rounded-lg border border-primary-300 p-4 transition hover:bg-base-100/50">
+					<div class="flex items-center gap-3">
+						<Icon name="socials/mdi-form-select" class="size-6 text-primary-500 transition group-hover:opacity-80" />
+						<div>
+							<div class="font-medium">{t(lang, 'contactPage', 'quoteForm')}</div>
+							<div class="text-sm opacity-80">{t(lang, 'buttons', 'getQuote')}</div>
+						</div>
+					</div>
+					<span class="text-primary-600 text-sm">{t(lang, 'contactPage', 'openQuoteForm')}</span>
+				</a>
 			</div>
 		</div>
 	</div>

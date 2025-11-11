@@ -2,7 +2,6 @@
 import Contact from "@components/Contact/Contact.astro";
 import PortfolioImage from "@components/PorfolioImage/PortfolioImage.astro";
 import PortfolioGrid from "@components/Portfolio/PortfolioGrid.astro";
-import TestimonialQuote from "@components/Testimonials/TestimonialQuote.astro";
 import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection } from "astro:content";
 
@@ -115,8 +114,6 @@ const otherPortfolios = await getCollection(
 			}
 		</div>
 	</article>
-
-	<TestimonialQuote />
 
 	<section class="mx-auto mt-12 px-4 md:mt-16 md:max-w-5xl">
 		<h3 class="h2 text-center">
