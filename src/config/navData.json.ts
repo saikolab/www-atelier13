@@ -25,10 +25,10 @@ const navConfig: navItem[] = [
     text: "Gallery",
     link: "/gallery/",
   },
-    {
-        text: "Services",
-        link: "/#pricing",
-    },
+  {
+    text: "Services",
+    link: "/#services",
+  },
 	{
 		text: "Pages",
 		dropdown: [
