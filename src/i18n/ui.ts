@@ -77,9 +77,9 @@ const UI = {
       en:
         'We craft interiors that balance aesthetics and function. From concept to completion, we translate your vision into spaces that feel effortless, intentional, and uniquely yours. Whether it’s a compact apartment refresh or a full renovation, we manage details so you can enjoy the results.',
       el:
-        'Δημιουργούμε εσωτερικούς χώρους που ισορροπούν αισθητική και λειτουργικότητα. Από τη σύλληψη έως την ολοκλήρωση, μετατρέπουμε το όραμά σας σε χώρους που νιώθουν αβίαστοι, προσεγμένοι και μοναδικά δικοί σας. Είτε πρόκειται για μια μικρή ανανέωση διαμερίσματος είτε για ολική ανακαίνιση, αναλαμβάνουμε τις λεπτομέρειες ώστε εσείς να απολαμβάνετε το αποτέλεσμα.',
+        'Στο Atelier 13 Interiors πιστεύουμε οτι κάθε χώρος αξίζει να αποπνέει άνεση, αισθητική και προσωπικότητα.\n\nΕίμαστε μια νέα δημιουργική ομάδα με πολλή αγάπη για το interior styling. Με έδρα τη Μυτιλήνη, αναλαμβάνουμε έργα σε όλη τη Λέσβο και το Βόρειο Αιγαίο, από μικρές ανακαινίσεις μέχρι ολοκληρωμένους σχεδιασμούς χώρων.\n\nΜε όρεξη, φαντασία και προσοχή στην λεπτομέρεια, δουλεύουμε δίπλα σας για να μεταμορφώσουμε το σπίτι, το Airbnb ή τον επαγγελματικό σας χώρο σε κάτι όμορφο, λειτουγικό και διαχρονικό.\n\nΤο χαρτοφυλάκιό μας μεγαλώνει συνεχώς, κάθε έργο είναι και μια ευκαιρία για να εξελιχθούμε και να δώσουμε τον καλύτερό μας εαυτό.\n\nΔεσμευόμαστε σε μια συνεργασία με συνέπεια, σεβασμό στις ανάγκες σας και δημιουργικό πνεύμα.',
     },
-    signature: { en: '— Atelier 13', el: '— Atelier 13' },
+    signature: { en: '— Maria Liakou, Atelier 13', el: '— Μαρία Λιάκου, Atelier 13' },
     imageAlt: { en: 'Atelier 13', el: 'Atelier 13' },
   },
     portfolioSection: {
@@ -101,5 +101,6 @@ export function t<K extends keyof typeof UI, S extends keyof (typeof UI)[K]>(
   subkey: S
 ): string {
   const entry = UI[key][subkey] as Record<Locale, string>;
-  return entry[lang] ?? entry.en;
+  const raw = entry[lang] ?? entry.en;
+  return typeof raw === "string" ? raw.replace(/\\n/g, "\n") : raw;
 }
