@@ -10,7 +10,7 @@ import icon from "astro-icon"; // https://www.astroicon.dev/guides/upgrade/v1/
 export default defineConfig({
 	site: "https://atelier13interiors.com",
 	redirects: {
-		"/": "/el/coming-soon",
+		"/": "/el/",
 	},
 	integrations: [
 		// example auto import component into blog post mdx files

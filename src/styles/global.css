@@ -44,11 +44,11 @@
 	}
 
 	.h2 {
-		@apply font-heading-1 text-2xl leading-tight tracking-wide uppercase md:text-[2.5rem] md:leading-tight;
+		@apply font-heading-1 text-2xl leading-tight tracking-wide md:text-[2.5rem] md:leading-tight;
 	}
 
 	.h3 {
-		@apply font-heading-2 text-lg leading-tight font-medium tracking-widest uppercase md:text-2xl md:leading-tight;
+		@apply font-heading-2 text-lg leading-tight font-medium tracking-widest md:text-2xl md:leading-tight;
 	}
 
 	.description {

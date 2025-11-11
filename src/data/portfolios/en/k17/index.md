@@ -1,6 +1,6 @@
 ---
 title: Minimalist Apartment Renovation
-description: A calm and functional living room redesign with a neutral palette, textures, and smart storage solutions.
+description: A 1980s penthouse apartment was transformed into a bright and elegant space with breathtaking views. The goal was to create an environment ideal for both long- and short-term stays — a space that exudes understated luxury through simple, refined lines.
 heroImage: ./k17-028.jpg
 date: "Aug 5 2024"
 location: Mytilene, Greece
@@ -12,7 +12,7 @@ order: 1
 lang: "en"
 ---
 
-A 1982 penthouse in the city was radically redesigned and renovated for comfort, immediacy, energy efficiency, and modernization. We improved the layout, added warm neutral tones and natural materials, and incorporated hidden storage spaces. The result: a bright, cozy space that feels larger and more personal.
+A 1980s penthouse apartment was transformed into a bright and elegant space with breathtaking views. The goal was to create an environment ideal for both long- and short-term stays — a space that exudes understated luxury through simple, refined lines.
 
 ## Work Summary
 

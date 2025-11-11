@@ -5,6 +5,10 @@
 	@apply disabled:pointer-events-none;
 }
 
+.button.normal-case {
+	text-transform: none;
+}
+
 .button--primary {
 	@apply bg-primary-200 text-base-900;
 	@apply hover:bg-primary-200/80;

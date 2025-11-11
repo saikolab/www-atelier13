@@ -22,8 +22,8 @@ const UI = {
   hero: {
     title: { en: 'Atelier 13 Interiors', el: 'Atelier 13 Interiors' },
     subtitle: {
-      en: "Transform spaces with thoughtful, functional, and timeless interior design across Mytilene and Lesvos (North Aegean).",
-      el: 'Μεταμορφώνουμε χώρους με προσεγμένο, λειτουργικό και διαχρονικό σχεδιασμό στη Μυτιλήνη και σε όλη τη Λέσβο (Βόρειο Αιγαίο).',
+      en: "We transform spaces with timeless aesthetics, functionality, and elegance in Mytilene and across Lesvos.",
+      el: 'Μεταμορφώνουμε χώρους με διαχρονική αισθητική, λειτουργικότητα και κομψότητα στη Μυτιλήνη και σε όλη τη Λέσβο.',
     },
     cta: { en: "Let's get in touch", el: 'Ας μιλήσουμε' },
   },
@@ -31,7 +31,7 @@ const UI = {
     title: { en: 'Contact Us', el: 'Επικοινωνία' },
     subtitle: {
       en: 'Pick the channel you prefer and we will get back to you as soon as possible.',
-      el: 'Διαλέξτε το κανάλι που προτιμάτε και θα σας απαντήσουμε το συντομότερο.',
+      el: 'Θα χαρούμε να μιλήσουμε για τον χώρο σας. Επιλέξτε τον τρόπο επικοινωνίας που σας εξυπηρετεί.',
     },
     email: { en: 'Email', el: 'Email' },
     phone: { en: 'Phone', el: 'Τηλέφωνο' },
@@ -48,7 +48,7 @@ const UI = {
     title: { en: "Let’s talk!", el: "Ας μιλήσουμε!" },
     body: {
       en: "Have questions or want to discuss your space? Choose the channel you prefer and we’ll get back to you as soon as possible.",
-      el: "Έχετε απορίες ή θέλετε να μιλήσουμε για τον χώρο σας; Διαλέξτε το κανάλι που προτιμάτε και θα σας απαντήσουμε το συντομότερο.",
+      el: "Θα χαρούμε να μιλήσουμε για τον χώρο σας. Επιλέξτε τον τρόπο επικοινωνίας που σας εξυπηρετεί.",
     },
     imageAlt: { en: "interior detail", el: "λεπτομέρεια εσωτερικού" },
   },
@@ -84,8 +84,8 @@ const UI = {
   },
     portfolioSection: {
     headline: {
-        en: "Elevated interiors designed for how you live and work.",
-        el: "Εσωτερικοί χώροι υψηλής αισθητικής για τον τρόπο που ζείτε και εργάζεστε.",
+        en: "From subtle updates to full transformations, these projects capture our interior styling philosophy:",
+        el: "Από μικρές αλλαγές μέχρι ολοκληρωμένους σχεδιασμούς, αυτά είναι τα έργα που αποτυπώνουν τη φιλοσοφία μας στο interior styling:",
     },
     viewAll: { en: "View all projects", el: "Δείτε όλα τα έργα" },
     fallback: {
