@@ -15,6 +15,8 @@ export interface Props {
 
 const { type = "general", title, description, image, noindex = false, lang = DEFAULT_LOCALE } = Astro.props as Props;
 
+const gaId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+
 // compute canonical + alternates
 const pathname = Astro.url.pathname.replace(/^\/(en|el)(?=\/|$)/, "");
 const canonicalBase = Astro.site?.toString().replace(/\/$/, "") ?? "";
@@ -54,3 +56,15 @@ const canonicalBase = Astro.site?.toString().replace(/\/$/, "") ?? "";
 
 <!-- no fallback as I saw issues with firefox fallback -->
 {siteData.useViewTransitions && <ClientRouter fallback="none" />}
+
+{gaId && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script
+      set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaId}');`}
+    ></script>
+  </>
+)}
