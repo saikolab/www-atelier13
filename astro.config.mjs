@@ -5,6 +5,9 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import AutoImport from "astro-auto-import";
 import icon from "astro-icon"; // https://www.astroicon.dev/guides/upgrade/v1/
+import keystatic from "@keystatic/astro";
+import react from "@astrojs/react";
+import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +23,9 @@ export default defineConfig({
 				"@components/Admonition/Admonition.astro",
 			],
 		}),
+		react(),
+		markdoc(),
+		keystatic(),
 		mdx(),
 		icon({
 			// I include only the icons I use. This is because if you use SSR, ALL icons will be included (no bueno)

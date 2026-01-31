@@ -5,9 +5,10 @@ heroImage: ./k17-021.jpg
 date: "Aug 5 2024"
 location: Μυτιλήνη, Ελλάδα
 clients: [Elena]
-images: [
-    [./k17-016.jpg, ./k17-017.jpg],
-]
+images:
+  - images:
+      - ./k17-016.jpg
+      - ./k17-017.jpg
 order: 1
 lang: "el"
 ---

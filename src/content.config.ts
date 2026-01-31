@@ -25,24 +25,40 @@ const portfolios = defineCollection({
     pattern: "**/[^_]*.{md,mdx}",
     base: "./src/data/portfolios",
   }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
+  schema: ({ image }) => {
+    const imageGroupArray = z.array(image()).refine((arr) => [1, 2, 3].includes(arr.length), {
+      message: "Each sub-array must contain 1, 2, or 3 items",
+    });
+
+    const imageGroup = z.union([
+      imageGroupArray,
+      z.object({ images: imageGroupArray }),
+    ]);
+
+    const titleField = z.union([
+      z.string(),
+      z.object({
+        name: z.string(),
+        slug: z.string(),
+      }),
+    ]);
+
+    return z.object({
+      title: titleField.transform((value) => (typeof value === "string" ? value : value.name)),
       description: z.string(),
       heroImage: image(),
       clients: z.array(z.string()),
       location: z.string(),
-      images: z.array(
-        z.array(image()).refine((arr) => [1, 2, 3].includes(arr.length), {
-          message: "Each sub-array must contain 1, 2, or 3 items",
-        }),
-      ),
+      images: z
+        .array(imageGroup)
+        .transform((groups) => groups.map((group) => (Array.isArray(group) ? group : group.images))),
       date: z.coerce.date(),
       order: z.number(),
       draft: z.boolean().optional(),
       // i18n
       ...i18nFields,
-    }),
+    });
+  },
 });
 
 // ──────────────────────────────────────────────────────────────────────────────

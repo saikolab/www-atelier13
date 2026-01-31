@@ -5,9 +5,11 @@ heroImage: ./k17-028.jpg
 date: "Aug 5 2024"
 location: Mytilene, Greece
 clients: [Dina]
-images: [
-    [../../../../assets/images/k17-002.jpg, ./k17-029.jpg, ./k17-031.jpg],
-]
+images:
+  - images:
+      - ../../../../assets/images/k17-002.jpg
+      - ./k17-029.jpg
+      - ./k17-031.jpg
 order: 1
 lang: "en"
 ---
