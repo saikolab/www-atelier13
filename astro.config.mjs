@@ -8,9 +8,11 @@ import icon from "astro-icon"; // https://www.astroicon.dev/guides/upgrade/v1/
 import keystatic from "@keystatic/astro";
 import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
+	output: "server",
 	site: "https://atelier13interiors.com",
 	redirects: {
 		"/": "/el/",
@@ -27,6 +29,7 @@ export default defineConfig({
 		markdoc(),
 		keystatic(),
 		mdx(),
+		cloudflare(),
 		icon({
 			// I include only the icons I use. This is because if you use SSR, ALL icons will be included (no bueno)
 			// https://www.astroicon.dev/reference/configuration#include

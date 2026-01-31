@@ -17,6 +17,7 @@
 		"@astrojs/sitemap": "3.3.1",
 		"@astrojs/markdoc": "^0.10.0",
 		"@astrojs/react": "^4.2.0",
+		"@astrojs/cloudflare": "^12.2.0",
 		"@cloudflare/wrangler": "^1.21.0",
 		"@fontsource-variable/playfair-display": "5.2.5",
 		"@fontsource-variable/raleway": "5.2.5",
